@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta
+      http-equiv="Content-Type"
+      content="1280*720; text/html; charset=UTF-8"
+    />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta name="needKey" content="true" />
+    <meta content="disCursor" />
+    <title>幸福白马</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        list-style: none;
+      }
+
+      body {
+        position: relative;
+        width: 1280px;
+        height: 720px;
+        overflow: hidden;
+      }
+
+      .main {
+        position: relative;
+        width: 1280px;
+        height: 1054px;
+        background: url("/xin-fu-bai-ma-tv/images/bg.png") no-repeat;
+      }
+
+      .home-logo {
+        position: absolute;
+        top: 40px;
+        left: 64px;
+      }
+
+      .jsyx-logo {
+        position: absolute;
+        top: 44px;
+        right: 64px;
+      }
+
+      .video-focus {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 999;
+      }
+
+      .video {
+        position: absolute;
+        top: 120px;
+        left: 64px;
+        width: 654px;
+        height: 368px;
+        z-index: 888;
+      }
+
+      .video .video-top {
+        position: absolute;
+        top: 5px;
+        left: 4px;
+        width: 646px;
+        height: 33px;
+        background-color: black;
+        line-height: 33px;
+      }
+
+      .video .video-top ul {
+        position: absolute;
+        top: 0;
+        right: 0px;
+      }
+
+      .video .video-top .video-tip {
+        position: absolute;
+        top: 0;
+        left: 20px;
+        color: #fff;
+      }
+
+      .video .video-top ul li {
+        display: inline-block;
+        width: 33px;
+        height: 33px;
+        color: #fff;
+        text-align: center;
+      }
+
+      .video .video-top ul .current {
+        background-color: #2858f0;
+      }
+
+      .video .play {
+        position: absolute;
+        top: 160px;
+        left: 300px;
+        width: 63px;
+        height: 63px;
+      }
+
+      .video .video-bar {
+        position: absolute;
+        bottom: 0px;
+        width: 654px;
+        height: 54px;
+        padding-left: 5px;
+        background: url(/xin-fu-bai-ma-tv/images/video-bar.png) no-repeat;
+        text-align: center;
+        font-size: 27px;
+        font-weight: 400;
+        color: #ffffff;
+        line-height: 50px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .bmsbs {
+        position: absolute;
+        top: 120px;
+        right: 64px;
+        width: 474px;
+        height: 368px;
+        background: url(/xin-fu-bai-ma-tv/images/bmsbs-bg.png) no-repeat;
+      }
+
+      .bmsbs ul {
+        position: absolute;
+        top: 55px;
+        left: 0;
+      }
+
+      .bmsbs ul li {
+        margin-left: 16px;
+        margin-bottom: 4px;
+        width: 460px;
+        height: 41px;
+        line-height: 41px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .bmsbs ul li img {
+        vertical-align: middle;
+        margin-right: 16px;
+      }
+
+      .bmsbs .more {
+        position: absolute;
+        bottom: 0;
+        width: 474px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        background: #2858f0;
+        border-radius: 0px 0px 8px 8px;
+        opacity: 1;
+      }
+
+      .bmsbs .more span {
+        width: 36px;
+        height: 24px;
+        margin-right: 12px;
+        font-size: 18px;
+        font-weight: 400;
+        color: #ffffff;
+      }
+
+      .bmsbs .more img {
+        position: relative;
+        top: 2px;
+      }
+
+      .bmsbs-focus {
+        position: absolute;
+        top: 171px;
+        left: 742px;
+        display: none;
+      }
+
+      .more-focus {
+        position: absolute;
+        top: 448px;
+        right: 64px;
+        display: none;
+      }
+
+      .baima-1 {
+        position: absolute;
+        top: 512px;
+        left: 64px;
+      }
+
+      .baima-1 img {
+        width: 315px;
+        height: 168px;
+        margin-right: 24px;
+      }
+
+      .xinshidai {
+        position: absolute;
+        width: 225px;
+        height: 168px;
+        top: 512px;
+        left: 742px;
+      }
+      .erweima {
+        position: absolute;
+        width: 225px;
+        height: 168px;
+        top: 512px;
+        right: 64px;
+        /* left: 742px; */
+      }
+
+      .baima-2 {
+        position: absolute;
+        top: 706px;
+        left: 64px;
+      }
+
+      .baima-2 img {
+        width: 369px;
+        height: 144px;
+        margin-right: 22px;
+        margin-bottom: 24px;
+      }
+
+      .baima-focus-1 {
+        position: absolute;
+        top: 512px;
+        left: 64px;
+        display: none;
+      }
+
+      .baima-focus-2 {
+        position: absolute;
+        top: 706px;
+        left: 64px;
+        display: none;
+      }
+
+      .baima-focus-xinshidai {
+        position: absolute;
+        top: 512px;
+        left: 742px;
+        display: none;
+      }
+
+      .debug {
+        font-size: 30px;
+        color: red;
+        position: absolute;
+        top: 50px;
+        right: 50px;
+      }
+    </style>
+  </head>
+
+  <body onunload="unload()">
+    <div class="main">
+      <img
+        class="home-logo"
+        src="/xin-fu-bai-ma-tv/images/home-logo.png"
+        alt=""
+      />
+      <img
+        src="/xin-fu-bai-ma-tv/images/jsyx-logo.png"
+        alt=""
+        class="jsyx-logo"
+      />
+
+      <div class="video">
+        <img
+          src="/xin-fu-bai-ma-tv/images/video-focus.png"
+          alt=""
+          class="video-focus"
+        />
+        <img class="play" src="/xin-fu-bai-ma-tv/images/home-play.png" />
+        <div class="video-top">
+          <span class="video-tip"></span
+          ><span>
+            <ul></ul>
+          </span>
+        </div>
+        <div class="video-bar"></div>
+      </div>
+
+      <div class="bmsbs">
+        <ul></ul>
+        <div class="more">
+          <span>更多</span
+          ><img src="/xin-fu-bai-ma-tv/images/more.png" alt="" />
+        </div>
+      </div>
+      <img
+        src="/xin-fu-bai-ma-tv/images/bmsbs-focus.png"
+        alt=""
+        class="bmsbs-focus"
+      />
+      <img
+        src="/xin-fu-bai-ma-tv/images/more-focus.png"
+        alt=""
+        class="more-focus"
+      />
+      <div class="baima-1">
+        <img src="" alt="" class="xingfubaima" /><img
+          src=""
+          alt=""
+          class="kongzhongbaima"
+        />
+      </div>
+      <img src="" alt="" class="xinshidai" />
+      <img src="" alt="" class="erweima" />
+      <div class="baima-2">
+        <img src="" alt="" class="jinribaima" /><img
+          src=""
+          alt=""
+          class="wenmingbaima"
+        /><img src="" alt="" class="huolibaima" /><img
+          src=""
+          alt=""
+          class="xianfengbaima"
+        /><img src="" alt="" class="meilibaima" /><img
+          src=""
+          alt=""
+          class="baoguangtai"
+        />
+      </div>
+
+      <img
+        src="/xin-fu-bai-ma-tv/images/baima-focus-1.png"
+        alt=""
+        class="baima-focus-1"
+      />
+      <img
+        src="/xin-fu-bai-ma-tv/images/baima-focus-2.png"
+        alt=""
+        class="baima-focus-2"
+      />
+      <img
+        src="/xin-fu-bai-ma-tv/images/xinshidai-focus.png"
+        alt=""
+        class="baima-focus-xinshidai"
+      />
+    </div>
+    <!--<div class="debug">111</div>-->
+  </body>
+  <script src="/xin-fu-bai-ma-tv/js/jquery.js"></script>
+  <script src="/xin-fu-bai-ma-tv/js/utils.js"></script>
+  <script src="/xin-fu-bai-ma-tv/js/action.js"></script>
+  <script src="/xin-fu-bai-ma-tv/js/cookie.js"></script>
+  <script src="/xin-fu-bai-ma-tv/js/player.js"></script>
+  <script src="/xin-fu-bai-ma-tv/js/scrollPage.js"></script>
+
+  <script>
+    var refocus;
+    if (getCookie("bm-home")) {
+      refocus = getCookie("bm-home").split(",");
+    } else {
+      refocus = [];
+    }
+    var focus = refocus[0] || "video";
+    var index = Number(refocus[1]) || 0;
+    if (focus === "baima2") {
+      $(".main").css({ top: -320 });
+    }
+    var fid = "5519582073522176";
+    var playId = "5519582074865664";
+    var bmsbsId = "5519582075947008";
+    var dataList = null;
+    var newList = null;
+    var playList = null;
+    var url;
+    getPlayUrl();
+    getnewList();
+    getCategoryList();
+    function getCategoryList() {
+      $.get(
+        "/apigateway/cms/api/v1/external/getCategoryList?categoryId=" +
+          fid +
+          "&pageSize=12&userId=123456&userType=2&sorted=1",
+        function (data) {
+          dataList = data.data.list;
+          if (data) {
+            $(".xingfubaima").attr("src", "/res" + dataList[2].poster);
+            $(".kongzhongbaima").attr("src", "/res" + dataList[3].poster);
+            $(".xinshidai").attr("src", "/res" + dataList[4].poster);
+            $(".jinribaima").attr("src", "/res" + dataList[5].poster);
+            $(".wenmingbaima").attr("src", "/res" + dataList[6].poster);
+            $(".huolibaima").attr("src", "/res" + dataList[7].poster);
+            $(".xianfengbaima").attr("src", "/res" + dataList[8].poster);
+            $(".meilibaima").attr("src", "/res/" + dataList[9].poster);
+            $(".baoguangtai").attr("src", "/res" + dataList[10].poster);
+            $(".erweima").attr("src", "/res" + dataList[11].poster);
+          }
+        }
+      );
+    }
+    function getPlayUrl() {
+      $.get(
+        "/apigateway/cms/api/v1/external/getContentList?categoryId=" +
+          playId +
+          "&pageSize=4&userId=123456&userType=2",
+        function (data) {
+          playList = data.data.list;
+          var str = "";
+          if (playList) {
+            for (var i = 0; i < playList.length; i++) {
+              if (i === 0) {
+                str += '<li class="current">' + (i + 1) + "</li>";
+              } else {
+                str += "<li>" + (i + 1) + "</li>";
+              }
+            }
+            $(".video ul").html(str);
+            $(".video .video-bar").html(playList[0].title);
+            $(".video .video-tip").html("按“1~" + playList.length + "”键切换");
+
+            url =
+              window.location.origin + "/vod/" + playList[0].path.split("/")[4];
+            // url = window.location.origin + '/1.mp4'
+            mediaPlay(url);
+          }
+        }
+      );
+    }
+    function changeVideo(index) {
+      if (playList) {
+        $(".video ul li").removeClass("current");
+        $(".video ul li").eq(index).addClass("current");
+        url =
+          window.location.origin + "/vod/" + playList[index].path.split("/")[4];
+        // url = window.location.origin + '/1.mp4'
+        $(".video .video-bar").html(playList[index].title);
+        mediaPlay(url);
+      }
+    }
+
+    //获取白马身边事
+    function getnewList() {
+      $.get(
+        "/apigateway/cms/api/v1/external/getContentList?categoryId=" +
+          bmsbsId +
+          "&pageSize=6&userId=123456&userType=2",
+        function (data) {
+          newList = data.data.list;
+          var str = "";
+          if (newList) {
+            for (var i = 0; i < newList.length; i++) {
+              str +=
+                '<li><img src="/xin-fu-bai-ma-tv/images/bmsbs-pic.png" alt="">' +
+                newList[i].title +
+                "</li>";
+            }
+            $(".bmsbs ul").html(str);
+          }
+        }
+      );
+    }
+
+    // 播放视频
+    function mediaPlay(url) {
+      $(".play").hide();
+      //$('.video-bar').hide()
+      try {
+        player.stop();
+        if (focus === "baima2") {
+          player.playSmall({
+            url: url,
+            left: 66,
+            top: -146,
+            width: 646,
+            height: 358,
+          });
+        } else {
+          player.playSmall({
+            url: url,
+            left: 66,
+            top: 124,
+            width: 646,
+            height: 358,
+          });
+        }
+      } catch (error) {}
+    }
+
+    function unload() {
+      player.stop();
+    }
+
+    var video = {
+      index: 0,
+      up: function () {},
+      down: function () {
+        focus = "baima1";
+        baima1.change();
+        this.change();
+      },
+      left: function () {},
+      right: function () {
+        focus = "list";
+        list.change();
+        this.change();
+      },
+      enter: function () {
+        window.location.href =
+          "/xin-fu-bai-ma-tv/play.html?max=4&categoryId=" +
+          playId +
+          "&assetId=" +
+          playList[this.index].assetId;
+      },
+      change: function () {
+        if (focus == "video") {
+          $(".video-focus").show();
+        } else {
+          $(".video-focus").hide();
+        }
+      },
+      load: function () {},
+    };
+
+    var list = {
+      index: 0,
+      up: function () {
+        if (this.index > 0) {
+          this.index--;
+        }
+        this.change();
+      },
+      down: function () {
+        if (this.index < 5) {
+          this.index++;
+        } else {
+          focus = "more";
+          more.change();
+        }
+        this.change();
+      },
+      left: function () {
+        focus = "video";
+        video.change();
+        this.change();
+      },
+      right: function () {},
+      enter: function () {
+        window.location.href =
+          "/xin-fu-bai-ma-tv/tuweninfo.html?id=" + newList[this.index].id;
+      },
+      change: function () {
+        if (focus == "list") {
+          $(".bmsbs-focus")
+            .show()
+            .css({
+              top: 171 + this.index * 45 + "px ",
+            });
+        } else {
+          $(".bmsbs-focus").hide();
+        }
+      },
+    };
+
+    var more = {
+      index: 0,
+      up: function () {
+        focus = "list";
+        list.index = 5;
+        list.change();
+        this.change();
+      },
+      down: function () {
+        focus = "xinshidai";
+        xinshidai.change();
+        this.change();
+      },
+      left: function () {
+        focus = "video";
+        video.change();
+        this.change();
+      },
+      right: function () {},
+      enter: function () {
+        window.location.href =
+          "/xin-fu-bai-ma-tv/list.html?type=baima1&index=" + 0;
+      },
+      change: function () {
+        if (focus == "more") {
+          $(".more-focus").show();
+        } else {
+          $(".more-focus").hide();
+        }
+      },
+    };
+
+    var baima1 = {
+      index: 0,
+      up: function () {
+        focus = "video";
+        video.change();
+        this.change();
+      },
+      down: function () {
+        focus = "baima2";
+        if (this.index === 0) {
+          baima2.index = 0;
+        } else {
+          baima2.index = 1;
+        }
+        baima2.change();
+        this.change();
+        player.playMoveDown();
+        $(".main").css({ top: -320 });
+      },
+      left: function () {
+        if (this.index > 0) {
+          this.index--;
+        }
+        this.change();
+      },
+      right: function () {
+        if (this.index < 1) {
+          this.index++;
+        } else {
+          focus = "xinshidai";
+          xinshidai.change();
+        }
+        this.change();
+      },
+      enter: function () {
+        window.location.href =
+          "/xin-fu-bai-ma-tv/list.html?type=baima1&index=" +
+          Number(this.index + 1);
+      },
+      change: function () {
+        if (focus == "baima1") {
+          $(".baima-focus-1")
+            .show()
+            .css({
+              left: 64 + this.index * 339 + "px ",
+            });
+        } else {
+          $(".baima-focus-1").hide();
+        }
+      },
+    };
+
+    var baima2 = {
+      index: 0,
+      up: function () {
+        if (this.index == 0) {
+          focus = "baima1";
+          baima1.index = 0;
+          baima1.change();
+          player.playMoveUp();
+          $(".main").css({ top: 0 });
+        } else if (this.index == 1) {
+          focus = "baima1";
+          baima1.index = 1;
+          baima1.change();
+          player.playMoveUp();
+          $(".main").css({ top: 0 });
+        } else if (this.index == 2) {
+          focus = "xinshidai";
+          xinshidai.change();
+          player.playMoveUp();
+          $(".main").css({ top: 0 });
+        } else {
+          this.index -= 3;
+        }
+
+        this.change();
+      },
+      down: function () {
+        if (this.index + 3 < 6) {
+          this.index += 3;
+        }
+        this.change();
+      },
+      left: function () {
+        if (this.index > 0) {
+          this.index--;
+        }
+        this.change();
+      },
+      right: function () {
+        if (this.index < 5) {
+          this.index++;
+        }
+        this.change();
+      },
+      enter: function () {
+        window.location.href =
+          "/xin-fu-bai-ma-tv/list.html?type=baima2&index=" + this.index;
+      },
+      change: function () {
+        if (focus == "baima2") {
+          $(".baima-focus-2")
+            .show()
+            .css({
+              left: 65 + (this.index % 3) * 390 + "px ",
+              top: 706 + Math.floor(this.index / 3) * 172 + "px ",
+            });
+        } else {
+          $(".baima-focus-2").hide();
+        }
+      },
+    };
+
+    var xinshidai = {
+      index: 0,
+      up: function () {
+        focus = "more";
+        more.change();
+        this.change();
+      },
+      down: function () {
+        focus = "baima2";
+        baima2.index = 2;
+        baima2.change();
+        player.playMoveDown();
+        $(".main").css({ top: -320 });
+        this.change();
+      },
+      left: function () {
+        focus = "baima1";
+        baima1.index = 1;
+        baima1.change();
+        this.change();
+      },
+      right: function () {},
+      enter: function () {
+        window.location.href =
+          "http://129.211.109.115/JSCN/huaian/jinhu/civilization/html/";
+      },
+      change: function () {
+        if (focus == "xinshidai") {
+          $(".baima-focus-xinshidai").show();
+        } else {
+          $(".baima-focus-xinshidai").hide();
+        }
+      },
+    };
+
+    var handleObj = {
+      video: video,
+      list: list,
+      more: more,
+      baima1: baima1,
+      baima2: baima2,
+      xinshidai: xinshidai,
+    };
+    handleObj[focus].index = index;
+    video.change();
+    list.change();
+    more.change();
+    baima1.change();
+    baima2.change();
+    xinshidai.change();
+    document.onkeydown = eventHandle;
+    document.onsystemevent = eventHandle;
+    //键值响应效果
+    function eventHandle() {
+      var event = arguments[0] || window.event;
+      var keyCode = event.which || event.keyCode;
+      switch (keyCode) {
+        case Action.KEY.UP:
+          handleObj[focus].up();
+          break;
+        case Action.KEY.DOWN:
+          handleObj[focus].down();
+          break;
+        case Action.KEY.LEFT:
+          handleObj[focus].left();
+          break;
+        case Action.KEY.RIGHT:
+          handleObj[focus].right();
+          break;
+        case Action.KEY.ENTER:
+          delCookie("bm-home");
+          setCookie("bm-home", focus + "," + handleObj[focus].index);
+          handleObj[focus].enter();
+          break;
+        case Action.KEY.BACK:
+        case Action.KEY.EXIT:
+          event.preventDefault();
+          window.history.back();
+          break;
+        case Action.KEY.NUMBER9:
+          break;
+        case Action.KEY.NUMBER0:
+          break;
+        case Action.KEY.NUMBER1:
+          video.index = 0;
+          changeVideo(0);
+          break;
+        case Action.KEY.NUMBER2:
+          video.index = 1;
+          changeVideo(1);
+          break;
+        case Action.KEY.NUMBER3:
+          video.index = 2;
+          changeVideo(2);
+          break;
+        case Action.KEY.NUMBER4:
+          video.index = 3;
+          changeVideo(3);
+          break;
+        case 768:
+          duration = player.duration();
+          currentPlayerTime = player.currentPlayerTime();
+          $(".debug").html(currentPlayerTime);
+          if (currentPlayerTime + 1 >= duration) {
+            if (video.index < playList.length - 1) {
+              video.index++;
+            } else {
+              video.index = 0;
+            }
+            changeVideo(video.index);
+          }
+
+          break;
+      }
+    }
+  </script>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta
+      http-equiv="Content-Type"
+      content="1280*720; text/html; charset=UTF-8"
+    />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta name="needKey" content="true" />
+    <meta content="disCursor" />
+    <title>幸福白马</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        list-style: none;
+      }
+
+      body {
+        position: relative;
+        width: 1280px;
+        height: 720px;
+        background: url("/xin-fu-bai-ma-tv/images/list-bg.png") no-repeat;
+        overflow: hidden;
+      }
+
+      .main {
+        position: absolute;
+        top: 40px;
+        left: 64px;
+        width: 1152px;
+        height: 640px;
+        background: rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+      }
+
+      .title {
+        position: absolute;
+        top: 32px;
+        left: 24px;
+        width: 900px;
+        height: 40px;
+        overflow: hidden;
+      }
+      .title p {
+        position: absolute;
+        font-size: 28px;
+        line-height: 40px;
+        font-weight: 400;
+        color: #ffffff;
+      }
+
+      .back {
+        position: absolute;
+        top: 32px;
+        right: 24px;
+        width: 173px;
+        height: 40px;
+        font-size: 18px;
+        line-height: 40px;
+        text-align: center;
+        color: #fff;
+        background: url(/xin-fu-bai-ma-tv/images/back-bg.png) no-repeat;
+      }
+
+      .time {
+        position: absolute;
+        top: 89px;
+        left: 25px;
+        width: 22px;
+        height: 22px;
+      }
+
+      .main > span {
+        position: absolute;
+        top: 91px;
+        left: 56px;
+        height: 20px;
+        font-size: 20px;
+        font-weight: 400;
+        color: #ffffff;
+      }
+
+      .main .text {
+        position: absolute;
+        top: 152px;
+        right: 28px;
+        width: 532px;
+        height: 464px;
+        overflow: hidden;
+      }
+
+      .main .content {
+        position: absolute;
+        width: 532px;
+        font-size: 24px;
+        font-weight: 400;
+        color: #ffffff;
+        text-align: justify;
+      }
+
+      .main .lunbotu {
+        position: absolute;
+        left: 24px;
+        top: 152px;
+        width: 544px;
+        height: 408px;
+      }
+
+      .lunbotu .scroll {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .lunbotu .scroll .img {
+        display: none;
+        width: 100%;
+        height: 100%;
+      }
+
+      .lunbotu .scroll .current {
+        display: block;
+      }
+
+      .dots {
+        position: absolute;
+        bottom: -56px;
+        right: 0px;
+        width: 544px;
+        height: 56px;
+        line-height: 56px;
+        background: #828a9f;
+        opacity: 0.6;
+        text-align: center;
+      }
+
+      .dots > span {
+        display: inline-block;
+        box-sizing: border-box;
+
+        width: 11px;
+        height: 11px;
+        border: 3px solid rgba(204, 204, 204, 0.2);
+        border-radius: 15px;
+        cursor: pointer;
+      }
+
+      .dots > span:not(:last-child) {
+        margin-right: 5px;
+      }
+
+      /* 小圆点的颜色 */
+      .dots .square {
+        background: #f46;
+      }
+
+      .hr {
+        position: absolute;
+        top: 199px;
+        left: 1212px;
+        width: 4px;
+        height: 96px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="main">
+      <div class="title"><p></p></div>
+      <div class="back">“0”键返回顶部</div>
+      <img class="time" src="/xin-fu-bai-ma-tv/images/time.png" alt="" /><span
+        class="publishTime"
+      ></span>
+      <div class="lunbotu">
+        <div class="scroll"></div>
+        <div class="dots"></div>
+      </div>
+      <div class="text">
+        <div class="content"></div>
+      </div>
+    </div>
+    <img src="/xin-fu-bai-ma-tv/images/hr1.png" alt="" class="hr" />
+  </body>
+  <script src="/xin-fu-bai-ma-tv/js/jquery.js"></script>
+  <script src="/xin-fu-bai-ma-tv/js/scrollPage1.js"></script>
+  <script src="/xin-fu-bai-ma-tv/js/utils.js"></script>
+  <script src="/xin-fu-bai-ma-tv/js/action.js"></script>
+  <script>
+    var id = utils.getParam("id") || "";
+    var info;
+    var srcList = [];
+
+    $(function () {
+      getContentInfo();
+    });
+    function getContentInfo() {
+      $.ajax({
+        url:
+          "/apigateway/cms/api/v1/external/getInfoContent?contentId=" +
+          id +
+          "&sorted=1&userId=123456&userType=2",
+        type: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        success: function (res) {
+          if (res.errorCode == 0) {
+            info = res.data;
+            var pics = [];
+            var reg = /(<img.*?)>/gi; //正则提取img标签
+            var lunboPic = info.content.match(reg);
+            var str = "";
+            var point = "";
+            var count = 0;
+            var titleCount = 0;
+            if (lunboPic && lunboPic.length > 0) {
+              for (var i = 0; i < lunboPic.length; i++) {
+                var srcReg = /\bsrc\b\s*=\s*[\'\"]?([^\'\"]*)[\'\"]?/i;
+                srcList.push(lunboPic[i].match(srcReg)[1]);
+                if (i === 0) {
+                  str += "<img class='img current' src='" + srcList[i] + "'>";
+                  point += "<span  class='square'></span>";
+                } else {
+                  str += "<img class='img' src='" + srcList[i] + "'>";
+                  point += "<span></span>";
+                }
+              }
+            }
+            $(".title p").eq(0).html(info.title);
+            $(".publishTime").eq(0).html(info.publishTime.split(" ")[0]);
+            $(".content").html(info.content.replace(reg, ""));
+            $(".title p").css("width", info.title.length * 40 + "px");
+            $(".scroll").html(str);
+            $(".dots").html(point);
+            //标题滚动
+            if (info.title.length > 22) {
+              var titler = setInterval(function () {
+                titleCount++;
+                $(".title p")
+                  .eq(0)
+                  .css("left", -titleCount + "px");
+                if (titleCount > 900) {
+                  titleCount = 0;
+                }
+              }, 100);
+            }
+
+            // 获取图片 和 小点
+            var imgs = $(".img");
+            var dots = $(".dots span");
+
+            // 给图片设置index 属性，好判断当前的图片是哪一张
+            for (let i = 0; i < imgs.length; i++) {
+              console.log(imgs[i]);
+              imgs[i].setAttribute("data-index", i);
+            } // 获取当前图片 和 图片的index（数组下标）
+            var current = $(".current");
+            console.log(current);
+            var currentIndex = current[0].dataset.index; //  左箭头的点击事件，点击了就返回前一张图片
+            // 如果当前图片为第一张那么需要更换到最后一张图片也就是第四张
+            if (imgs.length > 1) {
+              var timer = setInterval(changeImage, 5000);
+            }
+
+            function changeImage() {
+              if (currentIndex < srcList.length - 1) {
+                console.log(imgs[currentIndex].classList);
+                imgs.eq(currentIndex).removeClass("current");
+                dots.eq(currentIndex).removeClass("square");
+                imgs.eq(++currentIndex).addClass("current");
+                dots.eq(currentIndex).addClass("square");
+              } else {
+                imgs.eq(currentIndex).removeClass("current");
+                dots.eq(currentIndex).removeClass("square");
+                currentIndex = 0;
+                imgs.eq(currentIndex).addClass("current");
+                dots.eq(currentIndex).addClass("square");
+              }
+            }
+
+            ScrollPage.init(".text", ".content"); //
+            // ScrollPage.roll();
+          }
+        },
+      });
+    }
+    document.onkeydown = eventHandle;
+    document.onsystemevent = eventHandle; // 键值响应效果
+    function eventHandle() {
+      var event = arguments[0] || window.event;
+      var keyCode = event.which || event.keyCode;
+      switch (keyCode) {
+        case Action.KEY.UP:
+          ScrollPage.up();
+          break;
+        case Action.KEY.DOWN:
+          ScrollPage.down();
+          break;
+        case Action.KEY.LEFT:
+          break;
+        case Action.KEY.RIGHT:
+          break;
+        case Action.KEY.ENTER:
+          break;
+        case Action.KEY.NUMBER0:
+          ScrollPage.backTop();
+          break;
+        case Action.KEY.NUMBER3:
+          break;
+        case 8:
+        case 640:
+        case Action.KEY.BACK:
+        case Action.KEY.EXIT:
+          event.preventDefault();
+          //window.location.href='/apigateway/cms/api/v1/external/template/5519582073522176_list_STB'
+          window.history.back();
+          break;
+      }
+    }
+  </script>
+</html>

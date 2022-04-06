@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta
+      http-equiv="Content-Type"
+      content="1280*720; text/html; charset=UTF-8"
+    />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta name="needKey" content="true" />
+    <meta content="disCursor" />
+    <title>幸福白马</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        list-style: none;
+      }
+
+      body {
+        position: relative;
+        width: 1280px;
+        height: 720px;
+        background: url("/xin-fu-bai-ma-tv/images/list-bg.png") no-repeat;
+        overflow: hidden;
+      }
+
+      .main {
+        position: absolute;
+        top: 40px;
+        left: 64px;
+        width: 1152px;
+        height: 640px;
+        background: rgba(0, 0, 0, 0.25);
+        overflow: hidden;
+      }
+
+      .title {
+        position: absolute;
+        top: 32px;
+        left: 24px;
+        width: 900px;
+        height: 40px;
+        overflow: hidden;
+      }
+      .title p {
+        position: absolute;
+        font-size: 28px;
+        line-height: 40px;
+        font-weight: 400;
+        color: #ffffff;
+      }
+
+      .back {
+        position: absolute;
+        top: 32px;
+        right: 24px;
+        width: 173px;
+        height: 40px;
+        font-size: 18px;
+        line-height: 40px;
+        text-align: center;
+        color: #fff;
+        background: url(/xin-fu-bai-ma-tv/images/back-bg.png) no-repeat;
+      }
+
+      .time {
+        position: absolute;
+        top: 89px;
+        left: 25px;
+        width: 22px;
+        height: 22px;
+      }
+
+      .main span {
+        position: absolute;
+        top: 86px;
+        left: 56px;
+        height: 20px;
+        font-size: 20px;
+        font-weight: 400;
+        color: #ffffff;
+      }
+
+      .main .text {
+        position: absolute;
+        top: 152px;
+        left: 24px;
+        width: 1100px;
+        height: 464px;
+        overflow: hidden;
+      }
+
+      .main .content {
+        position: absolute;
+        width: 1100px;
+        font-size: 24px;
+        font-weight: 400;
+        color: #ffffff;
+        text-align: justify;
+      }
+
+      .hr {
+        position: absolute;
+        top: 199px;
+        left: 1212px;
+        width: 4px;
+        height: 96px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="main">
+      <div class="title"><p></p></div>
+      <div class="back">“0”键返回顶部</div>
+      <img class="time" src="/xin-fu-bai-ma-tv/images/time.png" alt="" /><span
+        class="publishTime"
+      ></span>
+      <div class="text">
+        <div class="content"></div>
+      </div>
+    </div>
+    <img src="/xin-fu-bai-ma-tv/images/hr1.png" alt="" class="hr" />
+  </body>
+
+  <script src="/xin-fu-bai-ma-tv/js/jquery.js"></script>
+  <script src="/xin-fu-bai-ma-tv/js/scrollPage1.js"></script>
+  <script src="/xin-fu-bai-ma-tv/js/utils.js"></script>
+  <script src="/xin-fu-bai-ma-tv/js/action.js"></script>
+  <script>
+    var id = utils.getParam("id") || "";
+    var info;
+    var srcList = [];
+
+    $(function () {
+      getContentInfo();
+    });
+    function getContentInfo() {
+      $.ajax({
+        url:
+          "/apigateway/cms/api/v1/external/getInfoContent?contentId=" +
+          id +
+          "&sorted=1&userId=123456&userType=2",
+        type: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        success: function (res) {
+          if (res.errorCode == 0) {
+            info = res.data;
+            var reg = /(<img.*?)>/gi; //正则提取img标签
+            var titleCount = 0;
+            $(".title p").eq(0).html(info.title);
+            $(".publishTime").eq(0).html(info.publishTime.split(" ")[0]);
+            $(".content").html(info.content.replace(reg, ""));
+            $(".title p").css("width", info.title.length * 40 + "px");
+            //标题滚动
+            if (info.title.length > 22) {
+              var titler = setInterval(function () {
+                titleCount++;
+                $(".title p")
+                  .eq(0)
+                  .css("left", -titleCount + "px");
+                if (titleCount > 900) {
+                  titleCount = 0;
+                }
+              }, 100);
+            }
+            ScrollPage.init(".text", ".content");
+            // ScrollPage.roll();
+          }
+        },
+      });
+    }
+
+    document.onkeydown = eventHandle;
+    document.onsystemevent = eventHandle;
+    // 键值响应效果
+    function eventHandle() {
+      var event = arguments[0] || window.event;
+      var keyCode = event.which || event.keyCode;
+      switch (keyCode) {
+        case Action.KEY.UP:
+          ScrollPage.up();
+          break;
+        case Action.KEY.DOWN:
+          ScrollPage.down();
+          break;
+        case Action.KEY.LEFT:
+          break;
+        case Action.KEY.RIGHT:
+          break;
+        case Action.KEY.ENTER:
+          break;
+        case Action.KEY.NUMBER0:
+          ScrollPage.backTop();
+          break;
+        case Action.KEY.NUMBER3:
+          break;
+        case 8:
+        case 640:
+        case Action.KEY.BACK:
+        case Action.KEY.EXIT:
+          event.preventDefault();
+          // window.location.href = '/apigateway/cms/api/v1/external/template/5519582073522176_list_STB'
+          window.history.back();
+          break;
+      }
+    }
+  </script>
+</html>

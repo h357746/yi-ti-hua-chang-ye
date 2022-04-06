@@ -1,0 +1,224 @@
+<style>
+  .container {
+    position: relative;
+    width: 1093px;
+    height: 560px;
+    background: rgba(0, 0, 0, 0.25);
+    /* filter: blur(undefinedpx); */
+  }
+
+  .container ul {
+    position: absolute;
+    top: 24px;
+    left: 25px;
+  }
+
+  .container ul li {
+    position: relative;
+    display: inline-block;
+    width: 326px;
+    height: 244px;
+    background: #ffffff;
+    margin-right: 25px;
+    margin-bottom: 24px;
+  }
+
+  .container ul li img {
+    width: 326px;
+    height: 244px;
+  }
+
+  .container ul li div {
+    position: absolute;
+    bottom: 0;
+    width: 327px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 0px 0px 0px 0px;
+    line-height: 40px;
+    font-size: 20px;
+    color: #fff;
+  }
+
+  .container ul li div img {
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    width: 36px;
+    height: 17px;
+  }
+
+  .container ul li div span {
+    position: absolute;
+    top: 0;
+    left: 77px;
+    width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .yunkan-focus {
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    z-index: 2;
+    display: none;
+  }
+</style>
+
+<div class="container">
+  <img
+    src="/res/commonres/xingfubaima/yunkan-focus.png"
+    alt=""
+    class="yunkan-focus"
+  />
+  <ul></ul>
+</div>
+
+<script>
+  function loadData(data) {
+    var dataStr = "";
+    console.log(data);
+    for (var i = 0; i < data.length; i++) {
+      dataStr +=
+        '<li><img src="/res' +
+        data[i].poster1 +
+        '" alt=""><div><img src="/res/commonres/xingfubaima/vr.png" alt=""><span>' +
+        data[i].title +
+        "</span></div></li>";
+    }
+    $(".container ul").html(dataStr);
+  }
+
+  var item = {
+    index: itemIndex,
+    up: function () {
+      if (this.index < 3 && pageNo == 1) {
+        focus = "menu";
+        menu.change();
+      } else {
+        if (this.index < 3 && pageNo <= totalPage) {
+          pageNo--;
+          getItemLIst();
+          this.index = 0;
+        }
+        if (this.index > 0) {
+          this.index -= 3;
+        }
+      }
+
+      this.change();
+    },
+    down: function () {
+      if (this.index + 3 < itemList.length) {
+        this.index += 3;
+      } else {
+        if (pageNo < totalPage) {
+          pageNo++;
+          this.index = 0;
+          getItemLIst();
+        }
+      }
+      this.change();
+    },
+    left: function () {
+      if (this.index > 0) {
+        this.index--;
+      } else {
+        if (this.index < 3 && pageNo <= totalPage) {
+          pageNo--;
+          getItemLIst();
+          this.index = 0;
+        }
+      }
+      this.change();
+    },
+    right: function () {
+      if (this.index < itemList.length - 1) {
+        this.index++;
+      } else {
+        if (pageNo < totalPage && this.index === itemList.length - 1) {
+          pageNo++;
+          this.index = 0;
+          getItemLIst();
+        }
+      }
+      this.change();
+    },
+    enter: function () {
+      delCookie("bm-list");
+      setCookie(
+        "bm-list",
+        focus + "," + type + "," + menu.index + "," + this.index + "," + pageNo
+      );
+      window.location.href = itemList[this.index].linkContent;
+    },
+    change: function () {
+      if (focus == "item") {
+        $(".yunkan-focus ")
+          .show()
+          .css({
+            left: 20 + (this.index % 3) * 351 + "px ",
+            top: 18 + Math.floor(this.index / 3) * 274 + "px ",
+          });
+      } else {
+        $(".yunkan-focus ").hide();
+      }
+    },
+  };
+
+  var handleObj = {
+    menu: {
+      down: function () {
+        focus = "item";
+        item.change();
+        menu.change();
+      },
+      up: function () {},
+      left: menu.left.bind(menu),
+      right: menu.right.bind(menu),
+      enter: menu.enter.bind(menu),
+    },
+    item: item,
+  };
+  document.onkeydown = eventHandle;
+  document.onsystemevent = eventHandle;
+  //键值响应效果
+  function eventHandle() {
+    var event = arguments[0] || window.event;
+    var keyCode = event.which || event.keyCode;
+    switch (keyCode) {
+      case Action.KEY.UP:
+        handleObj[focus].up();
+        break;
+      case Action.KEY.DOWN:
+        handleObj[focus].down();
+        break;
+      case Action.KEY.LEFT:
+        handleObj[focus].left();
+        break;
+      case Action.KEY.RIGHT:
+        handleObj[focus].right();
+        break;
+      case Action.KEY.ENTER:
+        handleObj[focus].enter();
+        break;
+      case Action.KEY.BACK:
+      case Action.KEY.EXIT:
+        event.preventDefault();
+        delCookie("bm-list");
+        window.history.back();
+        break;
+      case Action.KEY.NUMBER9:
+        break;
+      case Action.KEY.NUMBER0:
+        if (pageNo > 1) {
+          pageNo = 1;
+          menu.loadTemplate();
+        }
+
+        break;
+    }
+  }
+</script>

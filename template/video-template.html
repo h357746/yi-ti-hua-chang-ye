@@ -1,0 +1,244 @@
+<style>
+  .container {
+    position: relative;
+    width: 1093px;
+    height: 560px;
+    background: rgba(0, 0, 0, 0.25);
+    /* filter: blur(undefinedpx); */
+  }
+
+  .container ul {
+    position: absolute;
+    top: 24px;
+  }
+
+  .container ul li {
+    position: relative;
+    display: inline-block;
+    width: 243px;
+    height: 155px;
+    border-radius: 0px 0px 0px 0px;
+    margin-left: 22px;
+    margin-bottom: 22px;
+  }
+
+  .container ul li img {
+    width: 243px;
+    height: 155px;
+  }
+
+  .container ul li div {
+    position: absolute;
+    bottom: 0;
+    width: 244px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 0px 0px 0px 0px;
+    text-align: center;
+    line-height: 40px;
+    font-size: 20px;
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .container ul li .play {
+    position: absolute;
+    left: 102px;
+    top: 43px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .video-focus {
+    position: absolute;
+    top: 18px;
+    left: 17px;
+    z-index: 2;
+    display: none;
+  }
+</style>
+
+<div class="container">
+  <img
+    src="/res/commonres/xingfubaima/video-item-focus.png"
+    alt=""
+    class="video-focus"
+  />
+  <ul></ul>
+</div>
+
+<script>
+  function loadData(data) {
+    var dataStr = "";
+    console.log(data);
+    for (var i = 0; i < data.length; i++) {
+      if (data[i].contentType === 2) {
+        dataStr +=
+          '<li><img src="/res' +
+          data[i].poster1 +
+          '" alt=""><div>' +
+          data[i].title +
+          '</div><img class="play" src="/res/commonres/xingfubaima/play.png" /></li>';
+      } else {
+        dataStr +=
+          '<li><img src="/res' +
+          data[i].poster1 +
+          '" alt=""><div>' +
+          data[i].title +
+          "</div></li>";
+      }
+    }
+    $(".container ul").html(dataStr);
+  }
+
+  var item = {
+    index: itemIndex,
+    up: function () {
+      if (this.index < 4 && pageNo == 1) {
+        focus = "menu";
+        menu.change();
+      } else {
+        if (this.index < 4 && pageNo <= totalPage) {
+          pageNo--;
+          getItemLIst();
+          this.index = 0;
+        }
+        if (this.index > 0) {
+          this.index -= 4;
+        }
+      }
+
+      this.change();
+    },
+    down: function () {
+      if (this.index + 4 < itemList.length) {
+        this.index += 4;
+      } else {
+        if (pageNo < totalPage) {
+          pageNo++;
+          this.index = 0;
+          getItemLIst();
+        }
+      }
+      this.change();
+    },
+    left: function () {
+      if (this.index > 0) {
+        this.index--;
+      } else {
+        if (this.index < 4 && pageNo <= totalPage) {
+          pageNo--;
+          getItemLIst();
+          this.index = 0;
+        }
+      }
+      this.change();
+    },
+    right: function () {
+      if (this.index < itemList.length - 1) {
+        this.index++;
+      } else {
+        if (pageNo < totalPage && this.index === itemList.length - 1) {
+          pageNo++;
+          this.index = 0;
+          getItemLIst();
+        }
+      }
+      this.change();
+    },
+    enter: function () {
+      delCookie("bm-list");
+      setCookie(
+        "bm-list",
+        focus + "," + type + "," + menu.index + "," + this.index + "," + pageNo
+      );
+      if (itemList[this.index].contentType === 2) {
+        console.log(navList[type][menu.index].id);
+        window.location.href =
+          "/xin-fu-bai-ma-tv/fullPlay.html?playUrl=" +
+          encodeURI(
+            encodeURI(
+              window.location.origin +
+                "/vod/" +
+                itemList[this.index].path.split("/")[4]
+            )
+          );
+        // window.location.href =
+        //   "/apigateway/cms/api/v1/template/preview/5522941197912064?max=1&categoryId=" +
+        //   navList[type][menu.index].id +
+        //   "&assetId=" +
+        //   itemList[this.index].assetId;
+      } else {
+        window.location.href =
+          "/apigateway/cms/api/v1/external/template/5519582073522176_infoDetail_STB?id=" +
+          itemList[this.index].id;
+      }
+      // fullPlay / fullPlay.html ? playUrl = " + encodeURI(playUrl);
+    },
+    change: function () {
+      if (focus == "item") {
+        $(".video-focus ")
+          .show()
+          .css({
+            left: 17 + (this.index % 4) * 265 + "px ",
+            top: 18 + Math.floor(this.index / 4) * 180 + "px ",
+          });
+      } else {
+        $(".video-focus ").hide();
+      }
+    },
+  };
+
+  var handleObj = {
+    menu: {
+      down: function () {
+        focus = "item";
+        item.change();
+        menu.change();
+      },
+      up: function () {},
+      left: menu.left.bind(menu),
+      right: menu.right.bind(menu),
+      enter: menu.enter.bind(menu),
+    },
+    item: item,
+  };
+  document.onkeydown = eventHandle;
+  document.onsystemevent = eventHandle;
+  //键值响应效果
+  function eventHandle() {
+    var event = arguments[0] || window.event;
+    var keyCode = event.which || event.keyCode;
+    switch (keyCode) {
+      case Action.KEY.UP:
+        handleObj[focus].up();
+        break;
+      case Action.KEY.DOWN:
+        handleObj[focus].down();
+        break;
+      case Action.KEY.LEFT:
+        handleObj[focus].left();
+        break;
+      case Action.KEY.RIGHT:
+        handleObj[focus].right();
+        break;
+      case Action.KEY.ENTER:
+        handleObj[focus].enter();
+        break;
+      case Action.KEY.BACK:
+      case Action.KEY.EXIT:
+        event.preventDefault();
+        delCookie("bm-list");
+        window.history.back();
+        break;
+      case Action.KEY.NUMBER9:
+        break;
+      case Action.KEY.NUMBER0:
+        pageNo = 1;
+        menu.loadTemplate();
+        break;
+    }
+  }
+</script>

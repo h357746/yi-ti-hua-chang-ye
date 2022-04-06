@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta
+      http-equiv="Content-Type"
+      content="1280*720; text/html; charset=UTF-8"
+    />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta name="needKey" content="true" />
+    <meta content="disCursor" />
+    <title>幸福白马</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        list-style: none;
+      }
+
+      body {
+        position: relative;
+        width: 1280px;
+        height: 720px;
+        background: url("/xin-fu-bai-ma-tv/images/list-bg.png") no-repeat;
+      }
+
+      .menu {
+        position: absolute;
+        top: 41px;
+        left: 64px;
+      }
+
+      .menu ul {
+        position: relative;
+        z-index: 999;
+      }
+
+      .menu ul li {
+        /* display: inline-block; */
+        float: left;
+        width: 172px;
+        height: 64px;
+        font-size: 24px;
+        text-align: center;
+        font-weight: 400;
+        color: #ffffff;
+        line-height: 64px;
+        margin-right: 24px;
+      }
+
+      .menu ul .menu-choose-focus {
+        font-size: 26px;
+      }
+
+      .menu ul .menu-choose {
+        font-size: 26px;
+        color: #2858f0;
+      }
+
+      .menu .menu-focus {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+      }
+
+      .main {
+        position: absolute;
+        top: 121px;
+        left: 64px;
+        width: 1093px;
+        height: 560px;
+      }
+
+      .back-0 {
+        position: absolute;
+        top: 524px;
+        right: 70px;
+      }
+
+      .papge-bar {
+        position: absolute;
+        top: 121px;
+        right: 80px;
+      }
+
+      .page {
+        position: absolute;
+        top: 308px;
+        right: 64px;
+      }
+
+      .pageno {
+        position: absolute;
+        top: 305px;
+        right: 61px;
+        width: 40px;
+        height: 100px;
+        /* background-color: bisque; */
+      }
+
+      .pageno .current {
+        position: absolute;
+        top: 20px;
+        left: 5px;
+        width: 30px;
+        height: 20px;
+        text-align: center;
+      }
+
+      .pageno .line {
+        position: absolute;
+        top: 40px;
+        left: 5px;
+        width: 30px;
+        height: 20px;
+        text-align: center;
+      }
+
+      .pageno .total {
+        position: absolute;
+        top: 62px;
+        left: 5px;
+        width: 30px;
+        height: 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="menu">
+      <ul>
+        <!-- <li class="menu-choose">白马身边事</li>
+            <li>幸福白马</li>
+            <li>空中看白马</li>
+            <li>新时代文明</li> -->
+      </ul>
+      <img
+        src="/xin-fu-bai-ma-tv/images/menu-focus.png"
+        alt=""
+        class="menu-focus"
+      />
+    </div>
+
+    <div class="main"></div>
+
+    <img
+      src="/xin-fu-bai-ma-tv/images/vertical-bar.png"
+      alt=""
+      class="papge-bar"
+    />
+    <img src="/xin-fu-bai-ma-tv/images/page.png" alt="" class="page" />
+    <img src="/xin-fu-bai-ma-tv/images/back-0.png" alt="" class="back-0" />
+    <div class="pageno">
+      <p class="current"></p>
+      <p class="line">/</p>
+      <p class="total"></p>
+    </div>
+  </body>
+  <script src="/xin-fu-bai-ma-tv/js/jquery.js"></script>
+  <script src="/xin-fu-bai-ma-tv/js/utils.js"></script>
+  <script src="/xin-fu-bai-ma-tv/js/action.js"></script>
+  <script src="/xin-fu-bai-ma-tv/js/cookie.js"></script>
+  <script src="/xin-fu-bai-ma-tv/js/player.js"></script>
+
+  <script>
+    var refocus;
+    var menuIndex = 0;
+    if (getCookie("bm-list")) {
+      refocus = getCookie("bm-list").split(",");
+      menuIndex = Number(refocus[2]);
+    } else {
+      refocus = [];
+      menuIndex = Number(utils.getParam("index"));
+    }
+    console.log(refocus);
+    // if (utils.getParam("type")) {
+    //     delCookie('bm-list')
+    // }
+
+    var focus = refocus[0] || "menu";
+    var type = refocus[1] || utils.getParam("type") || "baima1";
+    //var menuIndex = 0;
+
+    //var menuIndex = Number(refocus[2])||Number(utils.getParam("index")) ||0
+    console.log(menuIndex);
+
+    var itemIndex = Number(refocus[3]) || 0;
+    var pageNo = Number(refocus[4]) || 1;
+    var totalPage = 0;
+    var itemList = null;
+    var navList = {
+      baima1: [
+        {
+          title: "白马身边事",
+          type: "tuwen",
+          id: "5519582075947008",
+          pageSize: 4,
+        },
+        {
+          title: "幸福白马",
+          type: "video",
+          id: "5519582077093888",
+          pageSize: 12,
+        },
+        {
+          title: "空中看白马",
+          type: "yunkan",
+          id: "5519582077814784",
+          pageSize: 6,
+        },
+        // { title: '新时代文明', type: 'tiaozhaun', id: '5519582078928896' },
+      ],
+      baima2: [
+        {
+          title: "今日白马",
+          type: "tuwen",
+          id: "5519582081746944",
+          pageSize: 4,
+        },
+        {
+          title: "文明白马",
+          type: "tuwen",
+          id: "5519582080075776",
+          pageSize: 4,
+        },
+        {
+          title: "活力白马",
+          type: "text",
+          id: "5519582079518720",
+          pageSize: 4,
+        },
+        {
+          title: "先锋白马",
+          type: "text",
+          id: "5519582081124352",
+          pageSize: 4,
+        },
+        {
+          title: "魅力白马",
+          type: "video",
+          id: "5519582082304000",
+          pageSize: 12,
+        },
+        { title: "曝光台", type: "tuwen", id: "5519582082861056", pageSize: 4 },
+      ],
+    };
+    var template = {
+      tuwen: "/xin-fu-bai-ma-tv/template/tuwen-template.html",
+      text: "/xin-fu-bai-ma-tv/template/text-template.html",
+      video: "/xin-fu-bai-ma-tv/template/video-template.html",
+      yunkan: "/xin-fu-bai-ma-tv/template/yunkan-template.html",
+    };
+
+    function getItemLIst() {
+      $.get(
+        "/apigateway/cms/api/v1/external/getContentList?categoryId=" +
+          navList[type][menu.index].id +
+          "&pageSize=" +
+          navList[type][menu.index].pageSize +
+          "&userId=123456&userType=2&pageNo=" +
+          pageNo,
+        function (data) {
+          itemList = data.data.list;
+          pageNo = data.data.pageNo;
+          totalPage = data.data.totalPage;
+          $(".current").html(pageNo);
+          $(".total").html(totalPage);
+          loadData(itemList);
+        }
+      );
+    }
+
+    var menu = {
+      index: menuIndex,
+      up: function () {},
+      down: function () {
+        focus = "item";
+        item.change();
+        this.change();
+      },
+      left: function () {
+        if (this.index > 0) {
+          $(".menu ul li").eq(this.index).removeClass("menu-choose-focus");
+          this.index--;
+          this.loadTemplate();
+          itemIndex = 0;
+        }
+
+        this.change();
+      },
+      right: function () {
+        if (this.index < navList[type].length - 1) {
+          $(".menu ul li").eq(this.index).removeClass("menu-choose-focus");
+          this.index++;
+          this.loadTemplate();
+          itemIndex = 0;
+        }
+
+        this.change();
+      },
+      enter: function () {},
+      change: function () {
+        $(".menu ul li").removeClass("menu-choose");
+
+        if (focus == "menu") {
+          $(".menu ul li").eq(this.index).addClass("menu-choose-focus");
+          $(".menu-focus")
+            .show()
+            .css({
+              left: 0 + this.index * 196 + "px ",
+            });
+        } else {
+          $(".menu-focus").hide();
+          $(".menu ul li").eq(this.index).addClass("menu-choose");
+        }
+      },
+      load: function () {
+        var menuStr = "";
+        for (var i = 0; i < navList[type].length; i++) {
+          menuStr += "<li>" + navList[type][i].title + "</li>";
+        }
+        $(".menu ul").html(menuStr);
+        this.loadTemplate();
+      },
+      loadTemplate: function () {
+        itemList = [];
+        $(".main").load(
+          template[navList[type][this.index].type],
+          function (response, status, xhr) {
+            if (status == "success") {
+              getItemLIst();
+              item.change();
+            }
+          }
+        );
+      },
+    };
+
+    menu.load();
+    menu.change();
+  </script>
+</html>
