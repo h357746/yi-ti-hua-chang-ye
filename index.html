@@ -365,8 +365,8 @@
 
   <script>
     var refocus;
-    if (getCookie("bm-home")) {
-      refocus = getCookie("bm-home").split(",");
+    if (getCookie("xin-fu-bai-ma-home")) {
+      refocus = getCookie("xin-fu-bai-ma-home").split(",");
     } else {
       refocus = [];
     }
@@ -786,13 +786,14 @@
           handleObj[focus].right();
           break;
         case Action.KEY.ENTER:
-          delCookie("bm-home");
-          setCookie("bm-home", focus + "," + handleObj[focus].index);
+          delCookie("xin-fu-bai-ma-home");
+          setCookie("xin-fu-bai-ma-home", focus + "," + handleObj[focus].index);
           handleObj[focus].enter();
           break;
         case Action.KEY.BACK:
         case Action.KEY.EXIT:
           event.preventDefault();
+          delCookie("xin-fu-bai-ma-home");
           window.history.back();
           break;
         case Action.KEY.NUMBER9:

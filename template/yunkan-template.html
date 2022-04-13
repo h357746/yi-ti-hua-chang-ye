@@ -147,9 +147,9 @@
       this.change();
     },
     enter: function () {
-      delCookie("bm-list");
+      delCookie("xin-fu-bai-ma-list");
       setCookie(
-        "bm-list",
+        "xin-fu-bai-ma-list",
         focus + "," + type + "," + menu.index + "," + this.index + "," + pageNo
       );
       window.location.href = itemList[this.index].linkContent;
@@ -207,7 +207,7 @@
       case Action.KEY.BACK:
       case Action.KEY.EXIT:
         event.preventDefault();
-        delCookie("bm-list");
+        delCookie("xin-fu-bai-ma-list");
         window.history.back();
         break;
       case Action.KEY.NUMBER9:

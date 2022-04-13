@@ -171,8 +171,8 @@
   <script>
     var refocus;
     var menuIndex = 0;
-    if (getCookie("bm-list")) {
-      refocus = getCookie("bm-list").split(",");
+    if (getCookie("xin-fu-bai-ma-list")) {
+      refocus = getCookie("xin-fu-bai-ma-list").split(",");
       menuIndex = Number(refocus[2]);
     } else {
       refocus = [];
@@ -180,7 +180,7 @@
     }
     console.log(refocus);
     // if (utils.getParam("type")) {
-    //     delCookie('bm-list')
+    //     delCookie('xin-fu-bai-ma-list')
     // }
 
     var focus = refocus[0] || "menu";
